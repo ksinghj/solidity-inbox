@@ -23,15 +23,23 @@ describe('Inbox', () => {
 
   describe('Inbox', () => {
     it('Deploys a contract', () => {
-      console.log('inbox: ', inbox)
-
       assert.ok(inbox.options.address)
     })
 
-    it('Gets initialised with the correct message', async () => {
+    it('Should be initialised with the correct message', async () => {
       const actualMessage = await inbox.methods.message().call()
 
-      assert.ok(actualMessage === mockMessage)
+      assert.strictEqual(actualMessage, mockMessage)
+    })
+
+    it('Should set the message', async () => {
+      const testMessage = 'test message'
+
+      await inbox.methods.setMessage(testMessage).send({ from: accounts[0] })
+
+      const actualMessage = await inbox.methods.message().call()
+
+      assert.strictEqual(actualMessage, testMessage)
     })
   })
 })
